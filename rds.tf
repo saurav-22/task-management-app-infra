@@ -4,8 +4,9 @@ module "db" {
   identifier = "mysql-db"
 
   engine               = "mysql"
-  engine_version       = "8.0"
+  major_engine_version = "8.0"
   instance_class       = "db.t3.micro"
+  family               = "mysql8.0"
   allocated_storage    = 20
 
   db_name  = "task_app"
@@ -36,6 +37,13 @@ resource "aws_security_group" "rds_sg" {
     to_port         = 3306
     protocol        = "tcp"
     security_groups = [module.eks.cluster_primary_security_group_id]
+  }
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["10.1.101.0/24"]
   }
 
 }
