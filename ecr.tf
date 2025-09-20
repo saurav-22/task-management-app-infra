@@ -5,7 +5,7 @@ module "ecr" {
   # Create a repository for each microservice
   for_each = toset(["user-service", "board-service", "task-service", "comment-service"])
 
-  repository_name = "task-management-app/${each.key}"
+  repository_name = "task-app/${each.key}"
   repository_type = "private"
 
   # Enable image scanning on push for security
@@ -29,17 +29,14 @@ module "ecr" {
     ]
   })
 
-  # Allow read/write access for GitHub Actions and EKS
+  # Allow read/write access for admin account
   repository_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Effect = "Allow"
         Principal = {
-          AWS = [
-            module.iam_github_actions.iam_role_arn,
-            module.eks_iam_role.iam_role_arn
-          ]
+          AWS = "arn:aws:iam::051101197314:root"
         }
         Action = [
           "ecr:GetDownloadUrlForLayer",
