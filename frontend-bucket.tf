@@ -2,8 +2,8 @@
 module "s3_frontend" {
   source  = "terraform-aws-modules/s3-bucket/aws"
 
-  bucket = "task-management-app-frontend" # Change to a unique bucket name
-  acl    = "public-read"
+  bucket = "saurav-task-management-app-frontend" # Change to a unique bucket name
+  #acl    = "public-read"
 
   # Enable static website hosting
   website = {
@@ -12,10 +12,10 @@ module "s3_frontend" {
   }
 
   # Block public access (except for website content)
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 
   # Enable versioning for safety
   versioning = {
@@ -27,7 +27,7 @@ module "s3_frontend" {
     {
       allowed_headers = ["*"]
       allowed_methods = ["GET", "HEAD"]
-      allowed_origins = ["https://your-cloudfront-id.cloudfront.net"] # Replace with your CloudFront domain
+      allowed_origins = ["https://de0e47pv5ccby.cloudfront.net"] # Replace with your CloudFront domain
       max_age_seconds = 3000
     }
   ]
